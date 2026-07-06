@@ -1,6 +1,6 @@
-using System.Net;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 
 namespace azure_functions_lab;
@@ -15,14 +15,21 @@ public class HelloFunction
     }
 
     [Function("HelloFunction")]
-    public HttpResponseData Run(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req)
+    public IActionResult Run(
+        [HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequest req)
     {
-        _logger.LogInformation("C# HTTP trigger function processed a request.");
+        _logger.LogInformation("HelloFunction triggered");
 
-        var response = req.CreateResponse(HttpStatusCode.OK);
-        response.WriteString("Welcome to Azure Functions!");
+        var name = req.Query["name"];
 
-        return response;
+        if (string.IsNullOrEmpty(name))
+        {
+            _logger.LogInformation("No name provided");
+            return new OkObjectResult("Welcome to Azure Functions!");
+        }
+
+        _logger.LogInformation("Name provided: {Name}", name);
+
+        return new OkObjectResult($"Hello, {name}!");
     }
 }
