@@ -18,18 +18,8 @@ public class HelloFunction
     public IActionResult Run(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequest req)
     {
-        _logger.LogInformation("HelloFunction triggered");
+        _logger.LogInformation("HelloFunction executed successfully");
 
-        var name = req.Query["name"];
-
-        if (string.IsNullOrEmpty(name))
-        {
-            _logger.LogInformation("No name provided");
-            return new OkObjectResult("Welcome to Azure Functions!");
-        }
-
-        _logger.LogInformation("Name provided: {Name}", name);
-
-        return new OkObjectResult($"Hello, {name}!");
+        return new OkObjectResult("Welcome to Azure Functions!");
     }
 }
