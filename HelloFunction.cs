@@ -16,7 +16,7 @@ public class HelloFunction
 
     [Function("HelloFunction")]
     public IActionResult Run(
-        [HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequest req)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequest req)
     {
         _logger.LogInformation("HelloFunction triggered");
 
